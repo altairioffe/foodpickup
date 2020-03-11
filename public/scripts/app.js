@@ -1,3 +1,6 @@
+let menuItems = {}
+let order = []
+
 $(() => {
   // $.ajax({
   //   method: "GET",
@@ -8,9 +11,8 @@ $(() => {
   //   }
   // });;
 
-
   const createMenuItem = function (item) {
-    return `  <article class = "menu">
+    return `  <article class = "menu" data-id= ${item.id}>
     <div class="item-image">
     <img class="ui medium circular image" src=${item.image}>
   </div>
@@ -28,21 +30,40 @@ $(() => {
     }
 
     $(".addCart").click(function () {
-      $(".addCart").addClass("disabled")
+
+
       event.preventDefault();
-      $(".new-item").append($(`<button class="add ui blue button" tabindex="0">+</button> <span id="counter">1 X BUCKET OF FRIED CHICKEN</span> <button class="remove ui red button" tabindex="0">-</button>`));
-      let preTax = $(".price").text().slice(1)
+      const $itemContainer = $(this).parent();
+      const itemId = $itemContainer.attr("data-id")
+      const itemInfo = menuItems[itemId]
+      $itemContainer.find(".addCart").addClass("disabled")
+
+      console.log(itemInfo)
+      console.log(menuItems[itemId].name);
+      console.log(menuItems[itemId].price);
+
+      const item = menuItems[itemId].name;
+      $(".new-item").append($(`<button class="add ui blue button" tabindex="0">+</button> <span id="counter">1 X ${item}</span> <button class="remove ui red button" tabindex="0">-</button>`));
+      const preTax = menuItems[itemId].price
       $(".pre-tax").text(`Total Before Tax: $${preTax}`)
       //need to setTimeout to make these two appear
       // $(".tax-amount").text("13% HST: $" + (j * i * 0.13).toFixed(2))
       // $(".total-price").text("Total Amount: $" + (j * i * 1.13).toFixed(2))
 
+
+
+
+
+
+
+
       //need to put a cap on how many of one item can be ordered
+      // $itemContainer.find(".add").click(function () {
       $(".add").click(function () {
         event.preventDefault();
         let i = parseInt($("#counter").text());
         i++;
-        $("#counter").text(i + "X BUCKET OF FRIED CHICKEN");
+        $("#counter").text(`${i} X ${item}`);
         let j = parseFloat(preTax)
         $(".pre-tax").text("Total Before Tax: $" + (j * i).toFixed(2))
         $(".tax-amount").text("13% HST: $" + (j * i * 0.13).toFixed(2))
@@ -70,6 +91,7 @@ $(() => {
       });
     });
   }
+
   // loads menu items
   const loadMenu = function () {
     $.ajax({
@@ -77,8 +99,12 @@ $(() => {
       method: "GET"
     })
       .then(response => {
+        for (let item of response) {
+          menuItems[item.id] = item;
+        };
         renderMenu(response);
       });
   }
   loadMenu();
 })
+
