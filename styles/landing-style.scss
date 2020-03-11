@@ -181,6 +181,7 @@ ul.headerNav li a:hover {
   position: fixed;
   right: 25px;
   width: 30%;
+  visibility: hidden;
 }
 
 .new-item, .pre-tax, .tax-amount, .total-price {

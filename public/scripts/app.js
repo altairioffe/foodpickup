@@ -30,31 +30,23 @@ $(() => {
     }
 
     $(".addCart").click(function () {
-
-
+      $(".calculator.ui.form").css("visibility","visible")
       event.preventDefault();
       const $itemContainer = $(this).parent();
       const itemId = $itemContainer.attr("data-id")
       const itemInfo = menuItems[itemId]
       $itemContainer.find(".addCart").addClass("disabled")
-
-      console.log(itemInfo)
-      console.log(menuItems[itemId].name);
-      console.log(menuItems[itemId].price);
-
-      const item = menuItems[itemId].name;
-      $(".new-item").append($(`<button class="add ui blue button" tabindex="0">+</button> <span id="counter">1 X ${item}</span> <button class="remove ui red button" tabindex="0">-</button>`));
-      const preTax = menuItems[itemId].price
-      $(".pre-tax").text(`Total Before Tax: $${preTax}`)
-      //need to setTimeout to make these two appear
-      // $(".tax-amount").text("13% HST: $" + (j * i * 0.13).toFixed(2))
-      // $(".total-price").text("Total Amount: $" + (j * i * 1.13).toFixed(2))
-
-
-
-
-
-
+      // console.log(itemInfo)
+      // console.log(menuItems[itemId].name);
+      // console.log(menuItems[itemId].price);
+      const addItem = menuItems[itemId].name;
+      const addPreTax = parseFloat(menuItems[itemId].price)
+      const addTax = (addPreTax * 0.13).toFixed(2);
+      const addTotal = (addPreTax * 1.13).toFixed(2);
+      $(".new-item").append($(`<button class="add ui blue button" tabindex="0">+</button> <span id="counter">1 X ${addItem}</span> <button class="remove ui red button" tabindex="0">-</button>`));
+      $(".pre-tax").text(`Total Before Tax: $${addPreTax}`)
+      $(".tax-amount").text(`13% HST: $${addTax}`)
+      $(".total-price").text(`Total Amount: $${addTotal}`)
 
 
       //need to put a cap on how many of one item can be ordered
@@ -63,11 +55,11 @@ $(() => {
         event.preventDefault();
         let i = parseInt($("#counter").text());
         i++;
-        $("#counter").text(`${i} X ${item}`);
-        let j = parseFloat(preTax)
-        $(".pre-tax").text("Total Before Tax: $" + (j * i).toFixed(2))
-        $(".tax-amount").text("13% HST: $" + (j * i * 0.13).toFixed(2))
-        $(".total-price").text("Total Amount: $" + (j * i * 1.13).toFixed(2))
+        $("#counter").text(`${i} X ${addItem}`);
+        let j = addPreTax
+        $(".pre-tax").text("Total Before Tax: $" + (i * j).toFixed(2))
+        $(".tax-amount").text("13% HST: $" + (i * j * 0.13).toFixed(2))
+        $(".total-price").text("Total Amount: $" + (i * j * 1.13).toFixed(2))
       });
 
 
@@ -83,11 +75,11 @@ $(() => {
         } else {
           i--;
         };
-        $("#counter").text(i + " X BUCKET OF FRIED CHICKEN");
-        let j = parseFloat(preTax)
-        $(".pre-tax").text("Total Before Tax: $" + (j * i).toFixed(2))
-        $(".tax-amount").text("13% HST: $" + (j * i * 0.13).toFixed(2))
-        $(".total-price").text("Total Amount: $" + (j * i * 1.13).toFixed(2))
+        $("#counter").text(`${i} X ${addItem}`);
+        let j = addPreTax
+        $(".pre-tax").text("Total Before Tax: $" + (i * j).toFixed(2))
+        $(".tax-amount").text("13% HST: $" + (i * j * 0.13).toFixed(2))
+        $(".total-price").text("Total Amount: $" + (i * j * 1.13).toFixed(2))
       });
     });
   }
