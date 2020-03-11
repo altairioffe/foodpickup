@@ -43,7 +43,8 @@ $(() => {
       const addPreTax = parseFloat(menuItems[itemId].price)
       const addTax = (addPreTax * 0.13).toFixed(2);
       const addTotal = (addPreTax * 1.13).toFixed(2);
-      $(".new-item").append($(`<button class="add ui blue button" tabindex="0">+</button> <span id="counter">1 X ${addItem}</span> <button class="remove ui red button" tabindex="0">-</button>`));
+      //added <br><br> to the end of append
+      $(".new-item").append($(`<button class="add ui blue button" tabindex="0">+</button> <button class="remove ui red button" tabindex="0">-</button> <span id="counter">1 X ${addItem}</span> <br> <br>`));
       $(".pre-tax").text(`Total Before Tax: $${addPreTax}`)
       $(".tax-amount").text(`13% HST: $${addTax}`)
       $(".total-price").text(`Total Amount: $${addTotal}`)
