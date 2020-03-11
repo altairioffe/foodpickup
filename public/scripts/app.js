@@ -1,3 +1,7 @@
+// total needs to be split (as in per item) ==> probably order variable related
+// calculations need to be done by the order array (logic is fine)
+// target buttons ==> why does it select/switch all buttons
+
 // global variable declarations to be filled in proceeding functions
 let menuItems = {}
 let order = []
@@ -32,7 +36,6 @@ $(() => {
       $("#menu-container").append(createMenuItem(item));
     }
 
-    //check out the brackets!!!!!
     // renders order summary/calculator form when menu item is added to order, also adds class to addCart button to disable it
     $(".addCart").click(function () {
       $(".calculator.ui.form").css("visibility","visible")
@@ -54,9 +57,15 @@ $(() => {
       const addPreTax = parseFloat(menuItems[itemId].price)
       const addTax = (addPreTax * 0.13).toFixed(2);
       const addTotal = (addPreTax * 1.13).toFixed(2);
+      order.push(addItem)
+      const id = Number(itemId) - 1
+      const classId = "class" + id
+      // console.log(classId)
+      console.log(order)
 
       // buttons are added and taxes/total price for the menu item appear in the summary/calculator form
-      $(".new-item").append($(`<button class="add ui blue button ${itemId}" tabindex="0">+</button> <button class="remove ui red button ${itemId}" tabindex="0">-</button> <span id="counter">1 X ${addItem}</span> <br> <br>`));
+
+      $(".new-item").append($(`<button class="add ui blue button ${classId}" tabindex="0">+</button> <button class="remove ui red button ${classId}" tabindex="0">-</button> <span class="counter ${classId}">1 X ${order[id]}</span> <br> <br>`));
       $(".pre-tax").text(`Total Before Tax: $${addPreTax}`)
       $(".tax-amount").text(`13% HST: $${addTax}`)
       $(".total-price").text(`Total Amount: $${addTotal}`)
@@ -66,22 +75,32 @@ $(() => {
 // console log dish ID ==> isolate/target elements... (must add the id or class to all entries in an object or array)
 
       // adds items to cart (which have already been added), and updates the tax and total price
-      // $itemContainer.find(".add").click(function () { ==> RAF'S CODE...
-      $(".add").click(function () {
+      // $itemContainer.find(".add").click(function () {
+      $(".classId, .add").click(function () {
         event.preventDefault();
-        let i = parseInt($("#counter").text());
+        order.push(addItem)
+        console.log(order)
+        let i = parseInt($(".classId, .counter").text());
         i++;
-        $("#counter").text(`${i} X ${addItem}`);
+        $(".classId, .counter").text(`${i} X ${order[id]}`);
         let j = addPreTax
         $(".pre-tax").text("Total Before Tax: $" + (i * j).toFixed(2))
         $(".tax-amount").text("13% HST: $" + (i * j * 0.13).toFixed(2))
         $(".total-price").text("Total Amount: $" + (i * j * 1.13).toFixed(2))
       });
 
+
+
+
+
+
+
+
+
       // removes items from cart (which have already been added), and updates the tax and total price
-      $(".remove").click(function () {
+      $(".classId, .remove").click(function () {
         event.preventDefault();
-        let i = parseInt($("#counter").text());
+        let i = parseInt($(".classId, .counter").text());
         if (i <= 0) {
           //some function to stop it/do nothing
           //need to make a full remove
@@ -91,7 +110,10 @@ $(() => {
         } else {
           i--;
         };
-        $("#counter").text(`${i} X ${addItem}`);
+        // removes the first occurence of the menu item (we need to make the item row dissappear when you get to 0)
+        order.splice(order.indexOf(addItem), 1)
+        console.log(order)
+        $(".classId, .counter").text(`${i} X ${order[id]}`);
         let j = addPreTax
         $(".pre-tax").text("Total Before Tax: $" + (i * j).toFixed(2))
         $(".tax-amount").text("13% HST: $" + (i * j * 0.13).toFixed(2))
