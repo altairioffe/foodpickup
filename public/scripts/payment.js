@@ -19,29 +19,29 @@ $(document).ready(function() {
     const cardNumber = $("#card-number").val();
     const cardDate = $("#card-date").val();
     const cardCvv = $("#cvc").val();
-    if (
-      !isEntryValid(name) ||
-      !isEntryValid(lastName) ||
-      !isEntryValid(phone) ||
-      !isEntryValid(address) ||
-      !isEntryValid(cardNumber) ||
-      !isEntryValid(cardDate) ||
-      !isEntryValid(cardCvv)
-    ) {
-      //Make sure that the text is valid or not too long with above functions
-      alert(
-        "You cannot leave a field empty, please fill out all the forms to proceed"
-      );
-    } else {
+    // if (
+    //   !isEntryValid(name) ||
+    //   !isEntryValid(lastName) ||
+    //   !isEntryValid(phone) ||
+    //   !isEntryValid(address) ||
+    //   !isEntryValid(cardNumber) ||
+    //   !isEntryValid(cardDate) ||
+    //   !isEntryValid(cardCvv)
+    // ) {
+    //   //Make sure that the text is valid or not too long with above functions
+    //   alert(
+    //     "You cannot leave a field empty, please fill out all the forms to proceed"
+    //   );
+    // } else {
       $.ajax({
         // If all pass, then AJAX post request and success function
         url: "/confirmation",
         type: "POST",
         data: JSON.stringify({ address: $(".address").val() }),
-        success: function() {
+        success: function() {2
           window.location.href = "/confirmation";
         }
       });
-    }
+    // }
   });
 });

@@ -45,12 +45,13 @@ router.post('/message', function(req, res, next) {
 });
 
 
-
 router.get("/confirmation", (req, res) => {
   res.render("confirmation");
 });
 
 router.post("/confirmation", (req, res) => {
+
+
 res.redirect("/confirmation");
 });
 
